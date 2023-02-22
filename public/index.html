@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="/public/controller.js"></script>
+
+</head>
+<body ng-app="myApp">
+    <div class="container-fluid pt-3">
+        <div ng-controller="userCtrl">
+            <div class=" pb-3">
+                Search: <input ng-model="searchText" type="text">
+            </div>
+    
+    
+            <div class="modal" id="add" tabindex="-1" >
+                <div class="modal-dialog d-flex justify-content-center">
+                    <div class="modal-content w-75">
+                        <div class="modal-header">
+                            <h4 class="text-center modal-title" id="addNewUser">Add New User </h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body p-lg-4">
+                            <form>
+                                  <!-- Id input -->
+                                  <div class="form-group">
+                                      <label class="form-label" for="id">You Id </label>
+                                    <input type="text" id="id" class="form-control" ng-model="user.id"/>
+                                </div>
+                                <!-- Name input -->
+                                <div class="form-group">
+                                    <label class="form-label" for="name2">Name </label>
+                                    <input type="text" id="name2" class="form-control" ng-model="user.name" />
+                                </div>
+            
+                                <!-- Address input -->
+                                <div class="form-group">
+                                    <label class="form-label" for="address">Address </label>
+                                    <input type="text" id="address" class="form-control" ng-model="user.address" />
+                                </div>
+            
+                                <!-- Phone input -->
+                                <div class="form-group">
+                                    <label class="form-label" for="phone">Phone </label>
+                                    <input type="phone" id="phone" class="form-control" ng-model="user.phone" />
+                                </div>
+            
+                                 <!-- Email input -->
+                                 <div class="form-outline mb-4">
+                                     <label class="form-label" for="email2">Email </label>
+                                    <input type="email" id="email2" class="form-control" ng-model="user.email" />
+                                </div>
+            
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-primary btn-block" ng-click="postdata(user.id, user.name, user.address, user.phone, user.email)" data-dismiss="modal">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal" id="edit" tabindex="-1" >
+                <div class="modal-dialog d-flex justify-content-center">
+                    <div class="modal-content w-75">
+                        <div class="modal-header">
+                            <h4 class="text-center modal-title" id="">Edit User Information</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body p-lg-4">
+                            <form>
+                                  <!-- Id input -->
+                                  <div class="form-group">
+                                      <label class="form-label" for="id">You Id </label>
+                                    <input type="text" id="id"  ng-model="editablerow.id" class="form-control" disabled/>
+                                </div>
+                                <!-- Name input -->
+                                <div class="form-group">
+                                    <label class="form-label" for="name2">Name </label>
+                                    <input type="text" id="name2" ng-model="editablerow.name" class="form-control" />
+                                </div>
+            
+                                <!-- Address input -->
+                                <div class="form-group">
+                                    <label class="form-label" for="address">Address </label>
+                                    <input type="text" id="address" ng-model="editablerow.address" class="form-control" />
+                                </div>
+            
+                                <!-- Phone input -->
+                                <div class="form-group">
+                                    <label class="form-label" for="phone">Phone </label>
+                                    <input type="phone" id="phone" ng-model="editablerow.phone" class="form-control" />
+                                </div>
+            
+                                 <!-- Email input -->
+                                 <div class="form-outline mb-4">
+                                     <label class="form-label" for="email2">Email </label>
+                                    <input type="email" id="email2" ng-model="editablerow.email" class="form-control" />
+                                </div>
+            
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-primary btn-block" ng-click="updateUser(editablerow.id, editablerow.name, editablerow.address, editablerow.phone, editablerow.email)">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Name</td>
+                        <td>Address</td>
+                        <td>Phone</td>
+                        <td>Email</td>
+                        <td>
+                        <button class="btn btn-primary" ng-click="openDialog()">
+                            Add new user
+                        </button>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users | filter:searchText" >
+                        <td ng-model="id">{{user.id}}</td>
+                        <td ng-model="name">{{user.name}}</td>
+                        <td ng-model="address">{{user.address}}</td>
+                        <td ng-model="phone">{{user.phone}}</td>
+                        <td ng-model="email">{{user.email}}</td>
+                        <td>
+                            <div class="button btn-group-lg">
+                                <button class="btn btn-success p-lg-1" data-toggle="modal" data-target="#edit" ng-click="editContent(user)">Edit </button>
+                                <button class="button btn-danger p-lg-1" ng-click="deleteUser(user.id)">Delete </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div ng></div>
+    
+</body>
+</html>
